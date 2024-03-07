@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        
+        {
+            "name": "prod",
+            "type": "python",
+            "workingDir": "$PROJECT_DIR$",
+            "environment": {
+                "PYTHONUNBUFFERED": "1",
+                "PYTHONPATH": "$PROJECT_DIR$"
+            },
+            "file": "$PROJECT_DIR$/main.py"
+        },
+        {
+            "name": "test",
+            "type": "python",
+            "workingDir": "$PROJECT_DIR$",
+            "environment": {
+                "PYTHONUNBUFFERED": "1",
+                "PYTHONPATH": "$PROJECT_DIR$"
+            },
+            "file": "$PROJECT_DIR$/main.py",
+            "arguments": ["--test-config"]
+        }
+    ]
+}

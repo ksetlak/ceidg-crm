@@ -1,0 +1,4 @@
+__pycache__/
+test_data/*
+ceidg-crm.db
+*config.py
