@@ -45,6 +45,11 @@ class GUI:
         self.label_info.configure(text=""); self.label_info.update()
         self.refresh_table()
 
+    def button_toggle_company_command(self):
+        nip = self.entry_nip.get()
+        logic.toggle_contacted_state(self.config.db_engine, nip)
+        self.refresh_table()
+
     def refresh_table(self):
         self.table.delete(*self.table.get_children())
         companies = logic.get_companies_with_contact_data(self.config.db_engine)
@@ -124,7 +129,7 @@ class GUI:
         
         self.button_update = Button(self.buttons_frame, text="Aktualizuj podmioty", command=self.button_update_command)
         # button_edit = Button(buttons_frame, text="Edit", command=lambda: toggle_entry_state(NORMAL))
-        self.button_toggle_company = Button(self.buttons_frame, text="Zmień status")
+        self.button_toggle_company = Button(self.buttons_frame, text="Zmień status", command=self.button_toggle_company_command)
         # button_save = Button(buttons_frame, text="Save", command=save_data)
         
         self.button_update.grid(row=3, column=1, pady=10, sticky='w')
