@@ -60,6 +60,9 @@ class GUI:
             entry = utils.company_to_tuple(company)
             self.table.insert(parent='', index='end', values=entry)
 
+    def show_context_menu(self, event):
+        self.context_menu.tk_popup(event.x_root, event.y_root)
+
     def __init__(self, config):
         self.config = config
         self.root = Tk() 
@@ -128,6 +131,13 @@ class GUI:
         self.buttons_frame.rowconfigure(0, weight=1)
         self.buttons_frame.pack(fill='none', anchor='w', expand=True, padx=10)
         
+        self.context_menu = Menu(self.root, tearoff=False)
+        self.context_menu.add_command(label="Użyj Ctrl+C, aby skopiować.")
+        self.entry_nip.bind("<Button-3>", self.show_context_menu)
+        self.entry_nazwa.bind("<Button-3>", self.show_context_menu)
+        self.entry_email.bind("<Button-3>", self.show_context_menu)
+        self.entry_telefon.bind("<Button-3>", self.show_context_menu)
+
         self.button_update = Button(self.buttons_frame, text="Aktualizuj podmioty", command=self.button_update_command)
         self.button_toggle_company = Button(self.buttons_frame, text="Zmień status", command=self.button_toggle_company_command)
         
