@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import Label as LegacyLabel
+from tkinter import Entry as LegacyEntry
 
 import logic, utils
 
@@ -17,10 +18,10 @@ class GUI:
         selected = event.widget.focus()
         values = event.widget.item(selected, 'values')
 
-        self.entry_nip.configure(state="enabled")
-        self.entry_nazwa.configure(state="enabled")
-        self.entry_email.configure(state="enabled")
-        self.entry_telefon.configure(state="enabled")
+        self.entry_nip.configure(state="normal")
+        self.entry_nazwa.configure(state="normal")
+        self.entry_email.configure(state="normal")
+        self.entry_telefon.configure(state="normal")
 
         self.entry_nip.delete(0, END)
         self.entry_nazwa.delete(0, END)
@@ -32,10 +33,10 @@ class GUI:
         self.entry_email.insert(0, values[2])
         self.entry_telefon.insert(0, values[3])
 
-        self.entry_nip.configure(state="disabled")
-        self.entry_nazwa.configure(state="disabled")
-        self.entry_email.configure(state="disabled")
-        self.entry_telefon.configure(state="disabled")
+        self.entry_nip.configure(state="readonly", background="#fff", readonlybackground="#fff")
+        self.entry_nazwa.configure(state="readonly", background="#fff", readonlybackground="#fff")
+        self.entry_email.configure(state="readonly", background="#fff", readonlybackground="#fff")
+        self.entry_telefon.configure(state="readonly", background="#fff", readonlybackground="#fff")
 
     def button_update_command(self):
         self.label_info.configure(text="POBIERANIE NOWYCH PODMIOTÓW"); self.label_info.update()
@@ -104,10 +105,10 @@ class GUI:
         self.label_email = Label(self.textfields_frame, text="e-mail:")
         self.label_telefon = Label(self.textfields_frame, text="Telefon:")
         
-        self.entry_nip = Entry(self.textfields_frame, state=DISABLED)
-        self.entry_nazwa = Entry(self.textfields_frame, width=50, state=DISABLED)
-        self.entry_email = Entry(self.textfields_frame, state=DISABLED)
-        self.entry_telefon = Entry(self.textfields_frame, width=50, state=DISABLED)
+        self.entry_nip = LegacyEntry(self.textfields_frame, state=DISABLED)
+        self.entry_nazwa = LegacyEntry(self.textfields_frame, width=50, state=DISABLED)
+        self.entry_email = LegacyEntry(self.textfields_frame, state=DISABLED)
+        self.entry_telefon = LegacyEntry(self.textfields_frame, width=50, state=DISABLED)
         
         self.label_nip.grid(row=1, column=1, padx=5, pady=5, sticky='w')
         self.label_nazwa.grid(row=1, column=3, padx=5, pady=5, sticky='w')
