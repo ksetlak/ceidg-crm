@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
+from tkinter import Label as LegacyLabel
 
 import logic, utils
 
@@ -36,9 +37,17 @@ class GUI:
         self.entry_email.configure(state="disabled")
         self.entry_telefon.configure(state="disabled")
 
+    def button_update_command(self):
+        self.label_info.configure(text="POBIERANIE NOWYCH PODMIOTÓW"); self.label_info.update()
+        logic.update_database(self.config)
+        self.label_info.configure(text="AKTUALIZOWANIE DANYCH KONTAKTOWYCH"); self.label_info.update()
+        logic.update_contact_info(self.config)
+        self.label_info.configure(text=""); self.label_info.update()
+        self.refresh_table()
+
     def refresh_table(self):
         self.table.delete(*self.table.get_children())
-        companies = logic.get_all_companies(self.config.db_engine)
+        companies = logic.get_companies_with_contact_data(self.config.db_engine)
         # Insert company data into the treeview
         for company in companies:
             # Insert each company record into the treeview
@@ -91,9 +100,9 @@ class GUI:
         self.label_telefon = Label(self.textfields_frame, text="Telefon:")
         
         self.entry_nip = Entry(self.textfields_frame, state=DISABLED)
-        self.entry_nazwa = Entry(self.textfields_frame, state=DISABLED)
+        self.entry_nazwa = Entry(self.textfields_frame, width=50, state=DISABLED)
         self.entry_email = Entry(self.textfields_frame, state=DISABLED)
-        self.entry_telefon = Entry(self.textfields_frame, state=DISABLED)
+        self.entry_telefon = Entry(self.textfields_frame, width=50, state=DISABLED)
         
         self.label_nip.grid(row=1, column=1, padx=5, pady=5, sticky='w')
         self.label_nazwa.grid(row=1, column=3, padx=5, pady=5, sticky='w')
@@ -105,23 +114,26 @@ class GUI:
         self.entry_email.grid(row=2, column=2, padx=5, pady=5, sticky='w')
         self.entry_telefon.grid(row=2, column=4, padx=5, pady=5, sticky='w')
         
+        self.label_info = LegacyLabel(self.textfields_frame, text="", fg='#f00', font=("bold", 25))
+        self.label_info.grid(row=1, column=5, padx=20, pady=5, sticky='w')
+
         self.buttons_frame = Frame(self.root)
         self.buttons_frame.columnconfigure(0, weight=1)
         self.buttons_frame.rowconfigure(0, weight=1)
         self.buttons_frame.pack(fill='none', anchor='w', expand=True, padx=10)
         
-        self.button_edit = Button(self.buttons_frame, text="Aktualizuj podmioty", command=logic.update_database(self.config.db_engine))  # TODO: invalid variable name
+        self.button_update = Button(self.buttons_frame, text="Aktualizuj podmioty", command=self.button_update_command)
         # button_edit = Button(buttons_frame, text="Edit", command=lambda: toggle_entry_state(NORMAL))
-        self.button_save = Button(self.buttons_frame, text="Zmień status")  # TODO: invalid variable name
+        self.button_toggle_company = Button(self.buttons_frame, text="Zmień status")
         # button_save = Button(buttons_frame, text="Save", command=save_data)
         
-        self.button_edit.grid(row=3, column=1, pady=10, sticky='w')
-        self.button_save.grid(row=3, column=2, pady=10, padx=10, sticky='w')
+        self.button_update.grid(row=3, column=1, pady=10, sticky='w')
+        self.button_toggle_company.grid(row=3, column=2, pady=10, padx=10, sticky='w')
         
         self.refresh_table()
         
         # Set the root window geometry to empty to allow it to resize automatically
-        self.root.geometry('')
+        self.root.geometry("1400x700")
         # Run the GUI
         print("Starting graphical user interface.")
         self.root.mainloop()

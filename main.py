@@ -1,7 +1,6 @@
 # TODO: Insert **or ignore** into the database. https://stackoverflow.com/a/19343100/5306048
 import argparse
 import gui
-from datetime import datetime as dt
 import logic, models
 from sqlalchemy import create_engine
 
@@ -23,16 +22,10 @@ else:
 config.db_engine = create_engine("sqlite:///ceidg-crm.db", echo=True)
 models.Base.metadata.create_all(config.db_engine)
 
-date_text = dt.now().strftime("%Y-%m-%d")
-logic.update_database(config.db_engine)
+# logic.update_database(config.db_engine)  # Not sure if we should do it at startup.
 
 gui = gui.GUI(config)
 
-# URL = config.BASE_URL + "/firma"
-# URL += "?" + "nip=" + "9241211252"
-# request = requests.get(URL, headers=headers)
-# print(f"Request to CEiDG API done with the following status: {request.status_code}.")
-# print(request.content)
 
 # URL = config.BASE_URL + "/raporty"
 # params = [
@@ -62,3 +55,5 @@ gui = gui.GUI(config)
 # 
 # with open("raport.zip", 'wb') as zip_file:
 #     zip_file.write(request.content)
+# TODO Clean up the commented code.
+# TODO pip freeze
