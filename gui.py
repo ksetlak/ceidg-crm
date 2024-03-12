@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.ttk import *
 
-import logic, models, utils
+import logic, utils
 
 
 class GUI():
