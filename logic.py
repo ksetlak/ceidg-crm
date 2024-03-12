@@ -8,8 +8,8 @@ from datetime import datetime as dt
 
 
 def get_all_companies(db_engine):
-    session = Session(db_engine)
-    query_results = select(models.Company)
+    with Session(db_engine) as session:
+        query_results = select(models.Company)
     companies = [company for company in session.scalars(query_results)] 
     return companies
 
@@ -53,3 +53,9 @@ def update_database(db_engine):
     #     #     jsonfile.write(json.dumps(json.loads(request.content), ensure_ascii=False, indent=4))
     #     i += 1
 
+def toggle_contacted_state(db_engine, nip):
+    with Session(db_engine) as session:
+        query_results = select(models.Company).where(models.Company.nip == nip)
+        company = session.scalars(query_results).one()
+        company.contacted = not company.contacted
+        session.commit()

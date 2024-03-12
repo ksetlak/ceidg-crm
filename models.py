@@ -23,9 +23,3 @@ class Company(Base):
     
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, name={self.name!r}, email={self.email!r}, phone={self.phone!r})"
-
-
-    def toggle_contacted_state(self):
-        self.contacted = not self.contacted
-        
-

@@ -4,12 +4,12 @@ from tkinter.ttk import *
 import logic, utils
 
 
-class GUI():
+class GUI:
     def row_doubleclick_action(self, event):
         selected = event.widget.focus()
         values = event.widget.item(selected, 'values')
         nip = values[0]
-        logic.toggle_contacted_state(nip)
+        logic.toggle_contacted_state(self.config.db_engine, nip)
         self.refresh_table()
 
     def row_lmbclick_action(self, event):
@@ -37,6 +37,7 @@ class GUI():
         self.entry_telefon.configure(state="disabled")
 
     def refresh_table(self):
+        self.table.delete(*self.table.get_children())
         companies = logic.get_all_companies(self.config.db_engine)
         # Insert company data into the treeview
         for company in companies:

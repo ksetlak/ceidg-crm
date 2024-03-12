@@ -27,12 +27,6 @@ date_text = dt.now().strftime("%Y-%m-%d")
 logic.update_database(config.db_engine)
 
 gui = gui.GUI(config)
-def toggle_contacted_state(event):
-    pass
-
-
-
-
 
 # URL = config.BASE_URL + "/firma"
 # URL += "?" + "nip=" + "9241211252"
