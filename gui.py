@@ -128,18 +128,13 @@ class GUI:
         self.buttons_frame.pack(fill='none', anchor='w', expand=True, padx=10)
         
         self.button_update = Button(self.buttons_frame, text="Aktualizuj podmioty", command=self.button_update_command)
-        # button_edit = Button(buttons_frame, text="Edit", command=lambda: toggle_entry_state(NORMAL))
         self.button_toggle_company = Button(self.buttons_frame, text="Zmień status", command=self.button_toggle_company_command)
-        # button_save = Button(buttons_frame, text="Save", command=save_data)
         
         self.button_update.grid(row=3, column=1, pady=10, sticky='w')
         self.button_toggle_company.grid(row=3, column=2, pady=10, padx=10, sticky='w')
         
         self.refresh_table()
         
-        # Set the root window geometry to empty to allow it to resize automatically
+        # Set the root window geometry to empty to allow it to resize automatically.
         self.root.geometry("1400x700")
-        # Run the GUI
-        print("Starting graphical user interface.")
         self.root.mainloop()
-        print("Main window closed.")

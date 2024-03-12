@@ -1,7 +1,7 @@
 # TODO: Insert **or ignore** into the database. https://stackoverflow.com/a/19343100/5306048
 import argparse
 import gui
-import logic, models
+import models
 from sqlalchemy import create_engine
 
 cmdlinearg_parser = argparse.ArgumentParser(
@@ -22,38 +22,8 @@ else:
 config.db_engine = create_engine("sqlite:///ceidg-crm.db", echo=True)
 models.Base.metadata.create_all(config.db_engine)
 
-# logic.update_database(config.db_engine)  # Not sure if we should do it at startup.
-
 gui = gui.GUI(config)
 
-
-# URL = config.BASE_URL + "/raporty"
-# params = [
-#     f"dataod={dt.now().strftime("%Y-%m-18")}",  # DEBUG
-#     f"datado={dt.now().strftime("%Y-%m-19")}"  # DEBUG
-# ]
-# URL += "?" + "&".join(params)
-# request = requests.get(URL, headers=headers)
-# print(f"Request to CEiDG API done with the following status: {request.status_code}.")
-# 
-# reports = json.loads(request.content)["raporty"]
-# 
-# nazwy = set()
-# # print(reports)
-# for report in reports:
-#     nazwy.add(report["nazwa"])
-#     # if report["nazwa"].startswith("Złożone wnioski"):
-#     if report["nazwa"].startswith("Zarejestrowane działalności"):
-#         report_id = report["id"]
-#         print(report_id)
-#         break
-# 
-# URL = config.BASE_URL + f"/raport/{report_id}"
-# print(URL)
-# request = requests.get(URL, headers=headers)
-# print(f"Request to CEiDG API done with the following status: {request.status_code}.")
-# 
-# with open("raport.zip", 'wb') as zip_file:
-#     zip_file.write(request.content)
-# TODO Clean up the commented code.
 # TODO pip freeze
+# TODO FEATURE Add "last DB update" in GUI.
+# TODO FEATURE Add a widget to set scan date.
