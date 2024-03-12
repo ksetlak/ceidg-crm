@@ -10,6 +10,7 @@ class GUI():
         values = event.widget.item(selected, 'values')
         nip = values[0]
         logic.toggle_contacted_state(nip)
+        self.refresh_table()
 
     def row_lmbclick_action(self, event):
         selected = event.widget.focus()
@@ -34,6 +35,14 @@ class GUI():
         self.entry_nazwa.configure(state="disabled")
         self.entry_email.configure(state="disabled")
         self.entry_telefon.configure(state="disabled")
+
+    def refresh_table(self):
+        companies = logic.get_all_companies(self.config.db_engine)
+        # Insert company data into the treeview
+        for company in companies:
+            # Insert each company record into the treeview
+            entry = utils.company_to_tuple(company)
+            self.table.insert(parent='', index='end', values=entry)
 
     def __init__(self, config):
         self.config = config
@@ -108,12 +117,7 @@ class GUI():
         self.button_edit.grid(row=3, column=1, pady=10, sticky='w')
         self.button_save.grid(row=3, column=2, pady=10, padx=10, sticky='w')
         
-        companies = logic.get_all_companies(self.config.db_engine)
-        # Insert company data into the treeview
-        for company in companies:
-            # Insert each company record into the treeview
-            entry = utils.company_to_tuple(company)
-            self.table.insert(parent='', index='end', values=entry)
+        self.refresh_table()
         
         # Set the root window geometry to empty to allow it to resize automatically
         self.root.geometry('')
