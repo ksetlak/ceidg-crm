@@ -1,41 +1,40 @@
 from tkinter import *
 from tkinter.ttk import *
 
-import logic
-import models
+import logic, models, utils
 
 
-class GUI():    
+class GUI():
     def row_doubleclick_action(self, event):
         selected = event.widget.focus()
         values = event.widget.item(selected, 'values')
         nip = values[0]
-        models.Company.toggle_contacted_state(nip)
+        logic.toggle_contacted_state(nip)
 
     def row_lmbclick_action(self, event):
         selected = event.widget.focus()
         values = event.widget.item(selected, 'values')
-        
+
         self.entry_nip.configure(state="enabled")
         self.entry_nazwa.configure(state="enabled")
         self.entry_email.configure(state="enabled")
         self.entry_telefon.configure(state="enabled")
-        
+
         self.entry_nip.delete(0, END)
         self.entry_nazwa.delete(0, END)
         self.entry_email.delete(0, END)
         self.entry_telefon.delete(0, END)
-        
+
         self.entry_nip.insert(0, values[0])
         self.entry_nazwa.insert(0, values[1])
         self.entry_email.insert(0, values[2])
         self.entry_telefon.insert(0, values[3])
-        
+
         self.entry_nip.configure(state="disabled")
         self.entry_nazwa.configure(state="disabled")
         self.entry_email.configure(state="disabled")
         self.entry_telefon.configure(state="disabled")
-    
+
     def __init__(self, config):
         self.config = config
         self.root = Tk() 
@@ -101,21 +100,20 @@ class GUI():
         self.buttons_frame.rowconfigure(0, weight=1)
         self.buttons_frame.pack(fill='none', anchor='w', expand=True, padx=10)
         
-        self.button_edit = Button(self.buttons_frame, text="Aktualizuj podmioty", command=logic.update_database())
+        self.button_edit = Button(self.buttons_frame, text="Aktualizuj podmioty", command=logic.update_database(self.config.db_engine))  # TODO: invalid variable name
         # button_edit = Button(buttons_frame, text="Edit", command=lambda: toggle_entry_state(NORMAL))
-        self.button_save = Button(self.buttons_frame, text="Zmień status")
+        self.button_save = Button(self.buttons_frame, text="Zmień status")  # TODO: invalid variable name
         # button_save = Button(buttons_frame, text="Save", command=save_data)
         
         self.button_edit.grid(row=3, column=1, pady=10, sticky='w')
         self.button_save.grid(row=3, column=2, pady=10, padx=10, sticky='w')
         
-        companies = [["5223201347", "Krzysztof Setlak IT Consulting", "krzysztof.setlak@gmail.com", "691769885", "Tak"],
-                     ["5223201347", "Krzysztof Setlak IT Consulting", "krzysztof.setlak@gmail.com", "691769885", "Tak"]]  # DEBUG
+        companies = logic.get_all_companies(self.config.db_engine)
         # Insert company data into the treeview
         for company in companies:
             # Insert each company record into the treeview
-            self.table.insert(parent='', index='end', values=tuple(company))
-        
+            entry = utils.company_to_tuple(company)
+            self.table.insert(parent='', index='end', values=entry)
         
         # Set the root window geometry to empty to allow it to resize automatically
         self.root.geometry('')

@@ -13,7 +13,10 @@ def get_all_companies(db_engine):
     companies = [company for company in session.scalars(query_results)] 
     return companies
 
-def update_database(payload, db_engine):
+def update_database(db_engine):
+    pass
+    # network.get_new_companies(config, date_text)
+    
     # i = 0
     # for firma in firmy["firmy"][:10]:  # DEBUG
     #     company_id = firma["id"]
@@ -49,3 +52,4 @@ def update_database(payload, db_engine):
     #     # with open(f"firma_{i}.json", 'w', encoding='utf-8') as jsonfile:  # Encoding just to be sure things don't get messed up on Windows.
     #     #     jsonfile.write(json.dumps(json.loads(request.content), ensure_ascii=False, indent=4))
     #     i += 1
+

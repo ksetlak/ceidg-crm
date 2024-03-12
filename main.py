@@ -1,5 +1,10 @@
 # TODO: Insert **or ignore** into the database. https://stackoverflow.com/a/19343100/5306048
 import argparse
+import gui
+from datetime import datetime as dt
+import logic, models
+from sqlalchemy import create_engine
+
 cmdlinearg_parser = argparse.ArgumentParser(
     prog="CEiDG-CRM",
     usage="""USAGE""",
@@ -15,18 +20,11 @@ if cmdlineargs.test_config:
 else:
     import prod_config as config
 
-import gui
-from datetime import datetime as dt
-import logic, network, models
-from sqlalchemy import create_engine
-
-db_engine = create_engine("sqlite:///ceidg-crm.db", echo=True)
-models.Base.metadata.create_all(db_engine)
+config.db_engine = create_engine("sqlite:///ceidg-crm.db", echo=True)
+models.Base.metadata.create_all(config.db_engine)
 
 date_text = dt.now().strftime("%Y-%m-%d")
-payload = network.get_new_companies(config, date_text)
-logic.update_database(payload)
-
+logic.update_database(config.db_engine)
 
 gui = gui.GUI(config)
 def toggle_contacted_state(event):
@@ -41,12 +39,6 @@ def toggle_contacted_state(event):
 # request = requests.get(URL, headers=headers)
 # print(f"Request to CEiDG API done with the following status: {request.status_code}.")
 # print(request.content)
-
-
-
-
-
-
 
 # URL = config.BASE_URL + "/raporty"
 # params = [
