@@ -5,6 +5,7 @@ import requests
 def construct_headers(config):
     return {'Authorization': f'Bearer {config.TOKEN}'}
 
+
 def error_logging_request(url, headers):
     request = requests.get(url, headers=headers)
     if request.status_code != 200:
@@ -13,6 +14,7 @@ def error_logging_request(url, headers):
         print("Response content:")
         print(request.content)
     return request
+
 
 def get_new_companies(config, date_text, page):
     url = config.BASE_URL + "/firmy"

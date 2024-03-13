@@ -17,6 +17,8 @@ class GUI:
     def row_lmbclick_action(self, event):
         selected = event.widget.focus()
         values = event.widget.item(selected, 'values')
+        nip = values[0]
+        self.selected_company = logic.get_company_by_nip(self.config.db_engine, nip)
 
         self.entry_nip.configure(state="normal")
         self.entry_nazwa.configure(state="normal")
@@ -51,9 +53,12 @@ class GUI:
         self.refresh_table()
 
     def button_toggle_company_command(self):
-        nip = self.entry_nip.get()
+        nip = self.selected_company.nip
         logic.toggle_contacted_state(self.config.db_engine, nip)
         self.refresh_table()
+
+    def button_view_company_details_command(self):
+        utils.view_company_in_browser(self.selected_company.uuid)
 
     def refresh_table(self):
         self.table.delete(*self.table.get_children())
@@ -69,7 +74,8 @@ class GUI:
 
     def __init__(self, config):
         self.config = config
-        self.root = Tk() 
+        self.root = Tk()
+        self.selected_company = None
 
         # Create a frame to hold the treeview and scrollbar
         self.frame = Frame(self.root)
@@ -144,9 +150,11 @@ class GUI:
 
         self.button_update = Button(self.buttons_frame, text="Aktualizuj podmioty", command=self.button_update_command)
         self.button_toggle_company = Button(self.buttons_frame, text="Zmień status", command=self.button_toggle_company_command)
-        
-        self.button_update.grid(row=3, column=1, pady=10, sticky='w')
-        self.button_toggle_company.grid(row=3, column=2, pady=10, padx=10, sticky='w')
+        self.button_view_company_details = Button(self.buttons_frame, text="Szczegóły", command=self.button_view_company_details_command)
+
+        self.button_update.grid(row=3, column=1, pady=10, padx=10, sticky='sw')
+        self.button_toggle_company.grid(row=3, column=2, pady=10, padx=10, sticky='sw')
+        self.button_view_company_details.grid(row=3, column=3, pady=10, padx=10, sticky='sw')
         
         self.refresh_table()
         

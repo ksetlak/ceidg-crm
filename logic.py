@@ -63,9 +63,16 @@ def update_contact_info(config):
             time.sleep(3.6)
 
 
-def toggle_contacted_state(db_engine, nip):
+def toggle_contacted_state(db_engine, nip):  # TODO Refactor this and button_toggle_company_command() to rely on UUID.
     with Session(db_engine) as session:
         query_results = select(models.Company).where(models.Company.nip == nip)
         company = session.scalars(query_results).one()
         company.contacted = not company.contacted
         session.commit()
+
+
+def get_company_by_nip(db_engine, nip):
+    with Session(db_engine) as session:
+        query_results = select(models.Company).where(models.Company.nip == nip)
+        company = session.scalars(query_results).one()
+        return company
