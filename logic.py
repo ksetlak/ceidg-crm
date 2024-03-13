@@ -53,6 +53,7 @@ def update_contact_info(config):
                 session.commit()
             else:
                 company.status = models.CompanyState.DATA_UNAVAILABLE
+                session.commit()
 
 
 def toggle_contacted_state(db_engine, nip):
