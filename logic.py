@@ -50,6 +50,10 @@ def update_contact_info(config):
     with Session(config.db_engine) as session:
         query_results = select(models.Company).where(models.Company.status == models.CompanyState.NEW)
         for company in session.scalars(query_results):
+            if company.nip == "":
+                with open("error.log", "a") as file:
+                    file.write(f"Broken company entry with UUID: {company.uuid}.")
+                continue
             details = network.get_company_details(config, company.nip)
             if "telefon" in details or "email" in details:
                 company.status = models.CompanyState.DATA_RETRIEVED
