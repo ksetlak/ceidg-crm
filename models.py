@@ -19,8 +19,8 @@ class CompanyState(enum.Enum):
 class Company(Base):
     __tablename__ = "company"
     id: Mapped[int] = mapped_column(primary_key=True)
-    uuid: Mapped[str] = mapped_column(String(36))
-    name: Mapped[str] = mapped_column(String(30))  # TODO: Max length of the name?
+    uuid: Mapped[str] = mapped_column(String(36), unique=True)
+    name: Mapped[str] = mapped_column(String(512))
     nip: Mapped[int] = mapped_column(Integer, unique=True)
     email: Mapped[Optional[str]]
     phone: Mapped[Optional[str]]

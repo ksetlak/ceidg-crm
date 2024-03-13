@@ -45,8 +45,9 @@ class GUI:
             self.label_info.configure(text="AKTUALIZOWANIE DANYCH KONTAKTOWYCH"); self.label_info.update()
             logic.update_contact_info(self.config)
             self.label_info.configure(text=""); self.label_info.update()
-        except:  # TODO Can we narrow this clause down? (IndexError for sure)
+        except Exception as e:  # TODO Can we narrow this clause down? (IndexError for sure)
             self.label_info.configure(text="BŁĄD!!!"); self.label_info.update()
+            print(repr(e))
         self.refresh_table()
 
     def button_toggle_company_command(self):

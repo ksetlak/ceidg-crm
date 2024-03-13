@@ -1,4 +1,3 @@
-# TODO: Insert **or ignore** into the database. https://stackoverflow.com/a/19343100/5306048
 import argparse
 import gui
 import models
@@ -24,6 +23,6 @@ models.Base.metadata.create_all(config.db_engine)
 
 gui = gui.GUI(config)
 
-# TODO pip freeze
 # TODO FEATURE Add "last DB update" in GUI.
 # TODO FEATURE Add a widget to set scan date.
+# TODO FEATURE Add a widget to filter the table: only not contacted, only with a phone number.
