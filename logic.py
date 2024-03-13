@@ -1,3 +1,4 @@
+import time
 import models
 import network
 from sqlalchemy import select, or_
@@ -24,19 +25,25 @@ def get_companies_with_contact_data(db_engine):
 
 def update_database(config):
     date_text = dt.now().strftime("%Y-%m-%d")
-    companies = network.get_new_companies(config, date_text)
-    companies = [models.dict_to_company(company) for company in companies]
-    with Session(config.db_engine) as session:
-        stmt = insert(models.Company)
-        values = []
-        for company in companies:
-            val = company.__dict__
-            del (val["_sa_instance_state"])
-            values.append(val)
-        stmt = stmt.values(values)
-        stmt = stmt.on_conflict_do_nothing(index_elements=['nip'])
-        session.execute(stmt)
-        session.commit()
+    page = 0
+    while True:
+        companies, last_page = network.get_new_companies(config, date_text, page)
+        companies = [models.dict_to_company(company) for company in companies]
+        with Session(config.db_engine) as session:
+            stmt = insert(models.Company)
+            values = []
+            for company in companies:
+                val = company.__dict__
+                del (val["_sa_instance_state"])
+                values.append(val)
+            stmt = stmt.values(values)
+            stmt = stmt.on_conflict_do_nothing(index_elements=['nip'])
+            session.execute(stmt)
+            session.commit()
+        if page == last_page:
+            break
+        time.sleep(3.6)
+        page += 1
 
 
 def update_contact_info(config):
@@ -50,10 +57,10 @@ def update_contact_info(config):
                     company.phone = details["telefon"]
                 if "email" in details:
                     company.email = details["email"]
-                session.commit()
             else:
                 company.status = models.CompanyState.DATA_UNAVAILABLE
-                session.commit()
+            session.commit()
+            time.sleep(3.6)
 
 
 def toggle_contacted_state(db_engine, nip):

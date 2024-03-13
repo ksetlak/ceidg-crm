@@ -40,10 +40,13 @@ class GUI:
 
     def button_update_command(self):
         self.label_info.configure(text="POBIERANIE NOWYCH PODMIOTÓW"); self.label_info.update()
-        logic.update_database(self.config)
-        self.label_info.configure(text="AKTUALIZOWANIE DANYCH KONTAKTOWYCH"); self.label_info.update()
-        logic.update_contact_info(self.config)
-        self.label_info.configure(text=""); self.label_info.update()
+        try:
+            logic.update_database(self.config)
+            self.label_info.configure(text="AKTUALIZOWANIE DANYCH KONTAKTOWYCH"); self.label_info.update()
+            logic.update_contact_info(self.config)
+            self.label_info.configure(text=""); self.label_info.update()
+        except:  # TODO Can we narrow this clause down? (IndexError for sure)
+            self.label_info.configure(text="BŁĄD!!!"); self.label_info.update()
         self.refresh_table()
 
     def button_toggle_company_command(self):
