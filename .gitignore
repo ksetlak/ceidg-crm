@@ -1,7 +1,9 @@
 __pycache__/
-venv/
-test_data/*
 .idea/
-ceidg-crm.db
-*config.py
 *.log
+*config.py
+build/
+ceidg-crm.db
+dist/
+test_data/*
+venv/
